@@ -4,8 +4,11 @@
     tools:context="com.example.aaron.drawing1.MainActivity">
     <item
         android:id="@+id/test"
-        android:title="Test"
+        android:title="Shrink/Bounce"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/grow"
+        android:title="Grow/Bounce" />
     <item
         android:id="@+id/raw_animation"
         android:orderInCategory="50"

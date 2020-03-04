@@ -38,8 +38,11 @@ class MainActivity : AppCompatActivity() {
         val id = item.itemId
 
         when (id) {
+            grow -> {
+                cb!!.setStyle((ChalkBoard.GROW))
+            }
             test -> {
-                cb!!.setStyle(ChalkBoard.TEST)
+                cb!!.setStyle(ChalkBoard.SHRINK)
             }
             raw_animation -> {
                 cb!!.setStyle(ChalkBoard.RAW)

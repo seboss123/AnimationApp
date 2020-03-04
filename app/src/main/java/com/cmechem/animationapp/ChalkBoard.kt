@@ -31,7 +31,10 @@ class ChalkBoard//Constructor - initialize this View
     private var deltaX = 40.0f   //change in x to next rectangle
     private var deltaY = 40.0f   //change in y to next rectangle
     private var oldX = 0.0f    //previous x-coordinate of rectangle NW corner
-    private var realoldX = 0.0f
+    private var realoldX1 = 0.0f
+    private var realoldY1 = 0.0f
+    private var realoldX2 = 0.0f
+    private var realoldY2 = 0.0f
     private var oldY = 0.0f    //previous y-coordinate of rectangle NW corner
     private var x1 = startX   //x-coordinate of rectangle NW corner used for animation
     private var y1 = top      //y-coordinate of rectangle NW corner used for animation
@@ -63,7 +66,7 @@ class ChalkBoard//Constructor - initialize this View
     //Called from Activity when animation type is selected from menu
     fun setStyle(s: Int) {
         style = s
-        colorFlag = s == COLOR_ACC || s == MOVE_RECOLOR || s == MOVE_ROTATE_RECOLOR || s == TEST
+        colorFlag = s == COLOR_ACC || s == MOVE_RECOLOR || s == MOVE_ROTATE_RECOLOR || s == SHRINK
         moveFlag = s != ROTATE && s != COLOR_ACC
     }
 
@@ -79,7 +82,10 @@ class ChalkBoard//Constructor - initialize this View
         if (moveFlag) {
             oldX = startX
             oldY = top
-            realoldX = x1
+            realoldX1 = x1
+            realoldY1 = y1
+            realoldX2 = x2
+            realoldY2 = y2
             startX = (0.90 * displayWidth * Math.random()).toFloat()
             deltaX = startX - oldX
             stopX = startX + width
@@ -142,13 +148,20 @@ class ChalkBoard//Constructor - initialize this View
                 atOnce.play(recolorguy).after(moveguy)
                 atOnce.start()
             }
-            TEST -> {
+            SHRINK -> {
                 val moveguy = getObjectAnimator(500, "x8", 0.0f, 1.0f)
 //                val recolorguy = getObjectAnimator(500, "currColor", 0.0f, 1.0f)
 //                val spinguy = getObjectAnimator(700, "angle", 0.0f, 360.0f)
                 moveguy.interpolator = BounceInterpolator()
                 moveguy.start()
 
+            }
+            GROW -> {
+                val moveguy = getObjectAnimator(500, "x9", 0.0f, 1.0f)
+//                val recolorguy = getObjectAnimator(500, "currColor", 0.0f, 1.0f)
+//                val spinguy = getObjectAnimator(700, "angle", 0.0f, 360.0f)
+                moveguy.interpolator = BounceInterpolator()
+                moveguy.start()
             }
             else -> {
             }
@@ -192,6 +205,12 @@ class ChalkBoard//Constructor - initialize this View
     fun setX8(value: Float) {
         fraction = value
         Log.e("THIS WORKED", "" + x1)
+        decreasesize()
+    }
+
+    fun setX9(value: Float) {
+        fraction = value
+        Log.e("THIS WORKED", "" + x1)
         increasesize()
     }
 
@@ -230,11 +249,18 @@ class ChalkBoard//Constructor - initialize this View
     }
 
     private fun increasesize() {
-        x1 = (realoldX - (x1 * fraction))
-        y1 = (y1 - fraction)
-        x2 = x2 + fraction
-        y2 = y2 + fraction
+        x1 = (realoldX1 - (10 * fraction))
+        y1 = (realoldY1 - (10 * fraction))
+        x2 = realoldX2 + (10 * fraction)
+        y2 = realoldY2 + (10 * fraction)
+        invalidate()
+    }
 
+    private fun decreasesize() {
+        x1 = (realoldX1 + (10 * fraction))
+        y1 = (realoldY1 + (10 * fraction))
+        x2 = realoldX2 - (10 * fraction)
+        y2 = realoldY2 - (10 * fraction)
         invalidate()
     }
 
@@ -262,6 +288,7 @@ class ChalkBoard//Constructor - initialize this View
         const val MOVE_RECOLOR = 12  //Constant to indicate move and change color simultaneously
         const val MOVE_ROTATE_RECOLOR =
             23  //Constant to indicate move and rotate simultaneously then recolor animation
-        const val TEST = 69
+        const val SHRINK = 69
+        const val GROW = 420
     }
 }
