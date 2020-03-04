@@ -18,7 +18,7 @@ import android.view.animation.DecelerateInterpolator
 
 class ChalkBoard//Constructor - initialize this View
     (context: Context) : View(context) {
-    private var displayWidth: Int = 0       //width of screen - initialized in constructor
+    private var displayWidth: Int = 2      //width of screen - initialized in constructor
     private var displayHeight: Int = 0      //height of screen - initialized in constructor
 
     //values to define rectangle placed on screen
